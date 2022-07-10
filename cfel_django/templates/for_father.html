@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>dadam uchun</title>
+    </head>
+    <body>
+        {% block content %}
+        <div class="container-fluid d-flex">
+            {% for row in rows %}
+            <div class="row">
+                <div class="col m-2">
+                    {% for table in row %}
+                    <h4 class='mt-2'>{{table.name}}</h4>
+                    <table class="table table-hover table-striped table-sm" id="whattable">
+                                
+                        <thead class="thead_dark">
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="whattbody">
+                            {% for table in table.tables %}
+                                <tr>
+                                    {% if table.creator == user %}
+                                        <td>{{table.linked.account}}</td>
+                                        <td>{{table.show_creator_overall}}</td>
+                                        <td><a class='text-danger' href='/links/events?lnk={{table.id}}'>ko'rish</a></td>
+                                    {% elif table.linked == user %}
+                                        <td>{{table.creator.account}}</td>
+                                        <td>{{table.show_linked_overall}}</td>
+                                        <td><a class='text-danger' href='/links/events?lnk={{table.id}}'>ko'rish</a></td>
+                                    {% else %}
+                                        <td>{{table.account}}</td>
+                                        <td>{{table.overall}}</td>
+                                        <td></td>
+                                    {% endif %}
+                                    
+                                </tr>
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endblock content %}
+    </body>
+</html>

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+<html>
+    <head>
+        
+    </head>
+    <body style="background: #f0f0f0;">
+
+
+        {% block content %}
+        <title>cfel</title>
+        <div class="container">
+            <div class="row  d-flex flex-wrap justify-content-between">
+                {% if not user %}
+                <div class="col-md-7 m-auto d-flex flex-wrap">
+                    
+                    <div class="text-center align-items-sm-center">
+                        
+                        <img src="{% static 'homepage/img/newcfel.png' %}" alt="gffgfgf" class="w-100">
+                        
+                    </div>
+                </div>
+                {% else %}
+                    <div class="col-md-6 col-lg-4 col-sm-8 text-center m-auto my-3">
+                        <div class = 'card'>
+                            <div class="card-header">
+                                <h1 class='text-danger'> pul </h1>
+                            </div>
+                            <div class = 'card-body'>
+                                    <a class='btn btn-success btn-sm' href = '/paids'>kassa</a>
+                                    <a class='btn btn-info btn-sm' href = '/paids/insert/plus'>kirim</a>
+                                    <a class='btn btn-warning btn-sm' href = '/paids/insert/minus'>chiqim</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-sm-8 text-center m-auto my-3">
+                        <div class = 'card'>
+                            <div class="card-header">
+                                <h1 class='text-danger'> tovar </h1>
+                            </div>
+                            <div class = 'card-body'>
+                                    <a class='btn btn-success btn-sm' href = '/sents/storage'>sklad</a>
+                                    <a class='btn btn-success btn-sm' href = '/sents'>+/-</a>
+                                    <a class='btn btn-info btn-sm' href = '/sents/insert/plus'>kirim</a>
+                                    <a class='btn btn-warning btn-sm' href = '/sents/insert/minus'>chiqim</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-sm-8 text-center m-auto my-3">
+                        <div class = 'card'>
+                            <div class="card-header">
+                                <h1 class='text-danger'> hisob </h1>
+                            </div>
+                            <div class = 'card-body'>
+                                <a class='btn btn-dark' href = '/links'>hisob</a>
+                            </div>
+                        </div>
+                    </div>
+                    {%  endif %}
+                        
+
+                </div>
+            
+        </div>
+        {% endblock content %}
+        
+    </body>
+</html>

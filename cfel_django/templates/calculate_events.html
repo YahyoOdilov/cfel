@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>kassa</title>
+        
+    </head>
+    <body>
+        {% block content %}
+        <div class="container">
+            <div class="row sticky top1">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto align-items-center d-flex justify-content-between mt-2">
+                    <h4>
+                        {% if linked_account.creator == user %}
+                        {{linked_account.linked.account}}: {{linked_account.show_creator_overall}} 
+                        {% else %}
+                        {{linked_account.creator.account}}: {{linked_account.show_linked_overall}}
+                        {% endif %}
+                    </h4>
+                    <div class="btn-group-sm" role="group" aria-label="Basic example">
+                        <a class='btn btn-success' href = '/links'>umumiy hisoblar</a>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto align-items-center d-flex justify-content-between mt-2">
+
+                    
+                    <table class="table table-hover table-sm" id="whattable">
+                                
+                        <thead class="thead_dark sticky top2">
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="whattbody">
+                            {% for table in tables %}
+                            {% if table.taker == user and table.sanction == 1 %}
+                                <tr class="bg-secondary text-warning">
+                                    <td> {{table.date}}</td>
+                                    <td> {{table.show_cash}}</td>
+                                    <td> </td>
+                                    <td> {{table.payer.account}}</td>
+                                    <td> {% if table.taker_comment %} {{table.taker_comment}} {% endif %}</td>
+                                </tr>
+                            {% elif table.payer == user and table.sanction == 1 %}
+                                <tr class="text-white bg-secondary">
+                                    <td>{{table.date}}</td>
+                                    <td></td>
+                                    <td>{{table.show_cash}}</td>
+                                    <td>{{table.taker.account}}</td>
+                                    <td>{% if table.payer_comment %} {{table.payer_comment}} {% endif %}</td>
+                                </tr>
+                            {% endif %}
+                            {% if table.producter == user and table.sanction == 1 %}
+                                <tr class=" text-danger">
+                                    <td> {{table.date}}</td>
+                                    <td> {{table.show_overall}}</td>
+                                    <td> </td>
+                                    <td> {{table.provider.account}}</td>
+                                    <td> {% if table.producter_comment %} {{table.producter_comment}} {% endif %}</td>
+                                </tr>
+                                
+                                {% for product in table.sents_products %}
+
+                                <tr>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.product.name}}</td>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.show_value}}</td>
+                                    <td class="text-info">{{product.show_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% elif table.provider == user and table.sanction == 1%}
+                                <tr>
+                                    <td>{{table.date}}</td>
+                                    <td></td>
+                                    <td>{{table.show_overall}}</td>
+                                    <td>{{table.producter.account}}</td>
+                                    <td>{% if table.provider_comment %} {{table.provider_comment}} {% endif %}</td>
+                                </tr>
+                                {% for product in table.sents_products %}
+                                <tr class=''>
+                                    <td class='text-secondary'></td>
+                                    <td class='text-secondary'></td>
+                                    <td class='text-secondary'>{{product.product.name}}</td>
+                                    <td class='text-secondary'>{{product.show_value}}</td>
+                                    <td class='text-secondary'>{{product.show_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto  mt-2">
+                    <h5 class="text-danger" id='text-not-sanction'> tasdiqlanmaganlar </h5>
+                    <table class="table table-hover table-sm" id="whattable">
+                                
+                        <thead class="thead_dark" id='nothead'>
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="notbody">
+                            {% for table in tables %}
+                            {% if table.taker == user and not table.sanction %}
+                                <tr  class="bg-secondary text-warning">
+                                    <td>{{table.date}}</td>
+                                    <td>{{table.show_cash}}</td>
+                                    <td></td>
+                                    <td>{{table.payer.account}}</td>
+                                    <td>{% if table.taker_comment %} {{table.taker_comment}} {% endif %}</td>
+                                </tr>
+                            {% elif table.payer == user and not table.sanction %}
+                                <tr class="text-white bg-secondary">
+                                    <td>{{table.date}}</td>
+                                    <td></td>
+                                    <td>{{table.show_cash}}</td>
+                                    <td>{{table.taker.account}}</td>
+                                    <td>{% if table.payer_comment %} {{table.payer_comment}} {% endif %}</td>
+                                </tr>
+                            {% endif %}
+                            {% if table.producter == user and not table.sanction %}
+                                <tr class="text-danger">
+                                    <td>{{table.date}}</td>
+                                    <td>{{table.show_overall}}</td>
+                                    <td></td>
+                                    <td>{{table.provider.account}}</td>
+                                    <td>{% if table.producter_comment %} {{table.producter_comment}} {% endif %}</td>
+                                </tr>
+                                {% for product in table.sents_products %}
+                                <tr>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.product.name}}</td>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.show_value}}</td>
+                                    <td class="text-info">{{product.show_price}}</td>
+                                </tr>
+                            
+                            {% endfor %}
+                            {% elif table.provider == user and not table.sanction %}
+                                <tr>
+                                    <td>{{table.date}}</td>
+                                    <td></td>
+                                    <td>{{table.show_overall}}</td>
+                                    <td>{{table.producter.account}}</td>
+                                    <td>{% if table.provider_comment %} {{table.provider_comment}} {% endif %}</td>
+                                </tr>
+                                {% for product in table.sents_products %}
+                                <tr class=''>
+                                    <td class='text-secondary'></td>
+                                    <td class='text-secondary'></td>
+                                    <td class='text-secondary'>{{product.product.name}}</td>
+                                    <td class='text-secondary'>{{product.show_value}}</td>
+                                    <td class='text-secondary'>{{product.show_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                            
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            nottable = document.getElementById('whattbody')
+            nottable.scrollIntoView()
+        </script>
+        {% endblock content %}
+    </body>
+</html>

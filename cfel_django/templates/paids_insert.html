@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+<html>
+    <head>
+        
+        <link rel="shortcut icon" type="image/png" href="{% static 'homepage/img/favicon.png' %}"/>
+    </head>
+    <body>
+        {% block content %}
+        <title>pul to'lovi</title>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-5 m-auto align-items-center d-flex justify-content-between mt-2">
+                    {% if state == 'plus' %} 
+                        <h1 class="text-info">kirim</h1> 
+                    {% else %} 
+                        <h1 class="text-warning">chiqim</h1> 
+                    {% endif %}
+                    <div class="btn-group-sm" role="group" aria-label="Basic example">
+                        <a class="btn btn-sm btn-success" href="/paids"> kassa </a>
+                        <a class="btn btn-sm btn-info" href="/paids/insert/plus"> kirim </a>
+                        <a class="btn btn-sm btn-warning" href="/paids/insert/minus"> chiqim </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-5 m-auto align-items-center d-flex justify-content-between mt-2">
+                        <p>kassa:{{overall}}</p> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-5 m-auto mt-2">
+                    <div class="card bg-light">
+                        <div class="card-body form-control-sm">
+                            <form method="post" action="/paids/insert/{{state}}" >{% csrf_token %}
+                                <p class="form-group">
+                                    <label for="who">
+                                        {% if state == 'plus' %} 
+                                            kimdan 
+                                        {% else %}
+                                            kimga
+                                        {% endif %}
+                                        :
+                                    </label><br>
+                                    <input placeholder="accountni kiriting" type="text"  class="form-control" list="browsers" name="who" id="who" value="{{values.who_value}}">
+                                    <datalist id="browsers">
+                                        {% for account in accounts %}
+                                        <option value="{{account.account}}">
+                                        {% endfor %}
+                                    </datalist>
+                                    {% if not values.who_value and method == 'POST' %}
+                                    <span class="small text-danger">cfel accountni kiritish talab qilinadi.</span>
+                                    {% endif %}
+                                    {% if not who_linked %}
+                                    <span class="small text-danger">bu account bilan ulanmagansiz</span>
+                                    {% endif %}
+                                    
+                                </p>
+                                <p class="form-group">
+                                    <label for="kredit">summa:</label><br>
+                                    <input placeholder="summani kiriting"  class="form-control" type="number" name="kredit" id="kredit"value="{{values.sum_value}}">
+                                    {% if not values.sum_value and method == 'POST' %}
+                                    <span class="small text-danger">summani kiritish talab qilinadi.</span>
+                                    {% endif %}
+                                </p>
+                                    
+                                <p class="form-group">
+                                    <label for="add_info">izoh qoldiring:</label><br>
+                                    <textarea placeholder="izohni kiriting" class="form-control" id="add_info" name="add_info" cols="30" rows="3">{{values.add_info_value}}</textarea>
+                                </p>
+                                <input type="submit" value="kiritish" id="primarybutton" class="btn btn-success">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                call = 0
+                $('#primarybutton').click(()=>{
+                    if(call){
+                        $('#primarybutton').attr('disabled', true)
+                    }
+                    call += 1
+                })
+            })
+        </script>
+        {% endblock content %}
+    </body>
+</html>

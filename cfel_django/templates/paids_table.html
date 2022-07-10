@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>kassa</title>
+    </head>
+    <body>
+        {% block content %}
+        <div class="container">
+            <div class="row sticky top1">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto align-items-center d-flex justify-content-between mt-2">
+                    <h4>jami: {{overall}}</h4>
+                    <div class="btn-group-sm" role="group" aria-label="Basic example">
+                        <a class="btn btn-sm btn-success" href="/paids"> kassa </a>
+                        <a class="btn btn-sm btn-info" href="/paids/insert/plus"> kirim </a>
+                        <a class="btn btn-sm btn-warning" href="/paids/insert/minus"> chiqim </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto align-items-center d-flex justify-content-between mt-2">
+
+                    
+                    <table class="table table-hover table-striped table-sm" id="whattable">
+                                
+                        <thead class="thead_dark sticky top2">
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="whattbody">
+                            {% for table in tables %}
+                            {% if table.taker == user and table.sanction == 1 %}
+                                <tr>
+                                    <td class="text-danger">{{table.date}}</td>
+                                    <td class="text-danger">{{table.show_cash}}</td>
+                                    <td class="text-danger"></td>
+                                    <td class="text-danger">{{table.payer.account}}</td>
+                                    <td class="text-danger">{% if table.taker_comment %} {{table.taker_comment}} {% endif %}</td>
+                                </tr>
+                            {% elif table.payer == user %}
+                                <tr>
+                                    <td>{{table.date}}</td>
+                                    <td></td>
+                                    <td>{{table.show_cash}}</td>
+                                    <td>{{table.taker.account}}</td>
+                                    <td>{% if table.payer_comment %} {{table.payer_comment}} {% endif %}</td>
+                                </tr>
+                            {% endif %}
+                            
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto  mt-2">
+                    <h5 class="text-danger"> tasdiqlanmagan kirimlar </h5>
+                    <table class="table table-hover table-striped table-sm" id="whattable">
+                                
+                        <thead class="thead_dark" id='nothead'>
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="notbody">
+                            {% for table in tables %}
+                            {% if table.taker == user and not table.sanction %}
+                                <tr>
+                                    <td class="text-danger">{{table.date}}</td>
+                                    <td class="text-danger">{{table.show_cash}}</td>
+                                    <td class="text-danger"></td>
+                                    <td class="text-danger">{{table.payer.account}}</td>
+                                    <td class="text-danger">{% if table.taker_comment %} {{table.taker_comment}} {% endif %}</td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            nottable = document.getElementById('whattbody')
+            nottable.scrollIntoView()
+        </script>
+        {% endblock content %}
+    </body>
+</html>

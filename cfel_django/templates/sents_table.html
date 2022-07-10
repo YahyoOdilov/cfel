@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>kassa</title>
+    </head>
+    <body>
+        {% block content %}
+        <div class="container">
+            <div class="row sticky top1">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto align-items-center d-flex justify-content-between mt-2">
+                    <h4>+/- </h4>
+                    <div class="btn-group-sm" role="group" aria-label="Basic example">
+                        <a class='btn btn-success' href = '/sents/storage'>sklad</a>
+                        <a class='btn btn-success' href = '/sents'>+/-</a>
+                        <a class='btn btn-info' href = '/sents/insert/plus'>kirim</a>
+                        <a class='btn btn-warning' href = '/sents/insert/minus'>chiqim</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto align-items-center d-flex justify-content-between mt-2">
+
+                    
+                    <table class="table table-hover table-sm" id="whattable">
+                                
+                        <thead class="thead_dark sticky top2">
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="whattbody">
+                            {% for table in tables %}
+                            {% if table.producter == user and table.sanction == 1 %}
+                                <tr>
+                                    <td class="text-danger">{{table.date}}</td>
+                                    <td class="text-danger">{{table.show_overall}}</td>
+                                    <td class="text-danger"></td>
+                                    <td class="text-danger">{{table.provider.account}}</td>
+                                    <td class="text-danger">{% if table.producter_comment %} {{table.producter_comment}} {% endif %}</td>
+                                </tr>
+                                {% for product in table.sents_products %}
+                                <tr>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.product.name}}</td>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.show_value}}</td>
+                                    <td class="text-info">{{product.show_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% elif table.provider == user %}
+                                <tr>
+                                    <td>{{table.date}}</td>
+                                    <td></td>
+                                    <td>{{table.show_overall}}</td>
+                                    <td>{{table.producter.account}}</td>
+                                    <td>{% if table.provider_comment %} {{table.provider_comment}} {% endif %}</td>
+                                </tr>
+                                {% for product in table.sents_products %}
+                                <tr>
+                                    <td class='text-secondary'></td>
+                                    <td class='text-secondary'></td>
+                                    <td class='text-secondary'>{{product.product.name}}</td>
+                                    <td class='text-secondary'>{{product.show_value}}</td>
+                                    <td class='text-secondary'>{{product.show_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-lg-7 m-auto  mt-2">
+                    <h5 class="text-danger"> tasdiqlanmagan kirimlar </h5>
+                    <table class="table table-hover table-sm" id="whattable">
+                                
+                        <thead class="thead_dark" id='nothead'>
+                            {% for column in columns %}
+                                <th>{{column}}</th>
+                            {% endfor %}
+                        </thead>
+                        <tbody id="notbody">
+                            {% for table in tables %}
+                            {% if table.producter == user and not table.sanction %}
+                                <tr>
+                                    <td class="text-danger">{{table.date}}</td>
+                                    <td class="text-danger">{{table.show_overall}}</td>
+                                    <td class="text-danger"></td>
+                                    <td class="text-danger">{{table.provider.account}}</td>
+                                    <td class="text-danger">{% if table.producter_comment %} {{table.producter_comment}} {% endif %}</td>
+                                </tr>
+                                {% for product in table.sents_products %}
+                                <tr>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.product.name}}</td>
+                                    <td class="text-info"></td>
+                                    <td class="text-info">{{product.show_value}}</td>
+                                    <td class="text-info">{{product.show_price}}</td>
+                                </tr>
+                            {% endfor %}
+                            {% endif %}
+                            
+                            {% endfor %}
+                                
+                        </tbody>
+                        
+                              
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            nottable = document.getElementById('whattbody')
+            nottable.scrollIntoView()
+        </script>
+        {% endblock content %}
+    </body>
+</html>

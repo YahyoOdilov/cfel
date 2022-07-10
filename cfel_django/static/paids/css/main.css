@@ -1,0 +1,23 @@
+*{
+    box-sizing: border-box;
+}
+
+.input_full_error{
+    margin: 0;
+    color: red;
+    font-size: small;
+}
+.forms{
+    width:400px;
+    margin:auto;
+    border: 2px solid #ced4da;
+    border-radius: 5px;
+    padding: 16px
+}
+
+@media screen and (max-width: 420px) {
+    .forms {
+      width: 90%; /* The width is 100%, when the viewport is 800px or smaller */
+
+    }
+  }
